@@ -2,14 +2,18 @@
 //  ArticlesTableViewController.swift
 //  JetTravelDemo
 //
-//  Created by Abhishek Gupta on 04/07/20.
-//  Copyright © 2020 Abhishek Gupta. All rights reserved.
+//  Created by Organization on 04/07/20.
+//  Copyright © 2020 Organization. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 class ArticlesTableViewController: UITableViewController {
 
+    private var articleListVM: ArticleListViewModel!
+    private var pageNumber = 1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,18 +22,33 @@ class ArticlesTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        setup()
+        self.articleListVM = ArticleListViewModel(self)
+        self.articleListVM.getArticleListFromServer()
+        
     }
+    
+    private func setup() {
+        
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    /*private func getArticleListFromServer() {
+        let url = URL(string: Constant().apiDomain + "blogs?page=\(pageNumber)&limit=10")!
+        WebServices().getArticlesList(url: url) { [unowned self] (articles) in
+            if let artilces = articles {
+                self.articleListVM = ArticleListViewModel(articles: artilces)
+
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }*/
 
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 
     /*
@@ -87,4 +106,17 @@ class ArticlesTableViewController: UITableViewController {
     }
     */
 
+}
+
+extension ArticlesTableViewController: ArticleListViewModelDelegate {
+    
+    func parseArticlSuccess() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func parseArticleFailedWithMessage(_ message: String) {
+        
+    }
 }

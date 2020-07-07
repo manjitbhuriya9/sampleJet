@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  JetTravelDemo
 //
-//  Created by Abhishek Gupta on 04/07/20.
-//  Copyright © 2020 Abhishek Gupta. All rights reserved.
+//  Created by Organization on 04/07/20.
+//  Copyright © 2020 Organization. All rights reserved.
 //
 
 import UIKit
@@ -16,6 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
+        print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        print(paths[0])
         return true
     }
 

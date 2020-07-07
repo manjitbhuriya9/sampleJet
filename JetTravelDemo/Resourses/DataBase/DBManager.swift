@@ -2,8 +2,8 @@
 //  DBManager.swift
 //  JetTravelDemo
 //
-//  Created by Abhishek Gupta on 05/07/20.
-//  Copyright © 2020 Abhishek Gupta. All rights reserved.
+//  Created by Organization on 05/07/20.
+//  Copyright © 2020 Organization. All rights reserved.
 //
 
 import Foundation
@@ -15,12 +15,37 @@ class DBManager {
     let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     private init() {}
     
-    func saveData() {
+    func saveData(object: [String:Any]) {
+        let articles = NSEntityDescription.insertNewObject(forEntityName: "Articles", into: context!) as! Articles
+        articles.createdAt = object["createdAt"] as? String
+        articles.content = object["content"] as? String
+        articles.comments = object["comments"] as? Double ?? 0
+        articles.likes = object["likes"] as? Double ?? 0
+        articles.name = object["name"] as? String
+        articles.lastname = object["lastname"] as? String
+        articles.designation = object["designation"] as? String
+        articles.avatar = object["avatar"] as? String
+        articles.image = object["image"] as? String
+        articles.title = object["title"] as? String
+        articles.url = object["url"] as? String
         
+        do {
+            try context?.save()
+        }catch {
+            print("Failed to save data into Core Data")
+        }
     }
     
-    func getArticleList() {
+    func getArticleList() -> [Articles]{
+        var articles = [Articles]()
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Articles")
+        do{
+            articles = try context?.fetch(fetchRequest) as! [Articles]
+        }catch{
+            print("Didn't Get the data")
+        }
         
+        return articles
     }
     
     func getUserList() {
