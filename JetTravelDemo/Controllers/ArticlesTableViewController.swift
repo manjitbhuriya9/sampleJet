@@ -49,17 +49,30 @@ class ArticlesTableViewController: UITableViewController {
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+   
+    }
+    
+   
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return self.articleListVM == nil ? 0 : self.articleListVM.numberOfSections()
+    }
+       
+      
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.articleListVM.numberOfRowsInSection(section)
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ArticleTableViewCell", for: indexPath) as! ArticleTableViewCell
 
+        let articleViewModel = self.articleListVM.articleAtIndex(indexPath.row)
+        cell.configure(articleViewModel)
         // Configure the cell...
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.

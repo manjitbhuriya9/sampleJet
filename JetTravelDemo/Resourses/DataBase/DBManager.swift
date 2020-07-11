@@ -15,8 +15,16 @@ class DBManager {
     let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     private init() {}
     
-    func saveData(object: [String:Any]) {
-        let articles = NSEntityDescription.insertNewObject(forEntityName: "Articles", into: context!) as! Articles
+    func saveData(object: Data) {
+        let jsonData = NSEntityDescription.insertNewObject(forEntityName: "Articles", into: context!) as! Articles
+              
+        jsonData.jsonresponse = object
+               do {
+                   try context?.save()
+               }catch {
+                   print("Failed to save data into Core Data")
+               }
+        /*let articles = NSEntityDescription.insertNewObject(forEntityName: "Articles", into: context!) as! Articles
         articles.createdAt = object["createdAt"] as? String
         articles.content = object["content"] as? String
         articles.comments = object["comments"] as? Double ?? 0
@@ -33,7 +41,7 @@ class DBManager {
             try context?.save()
         }catch {
             print("Failed to save data into Core Data")
-        }
+        }*/
     }
     
     func getArticleList() -> [Articles]{
@@ -50,6 +58,23 @@ class DBManager {
     
     func getUserList() {
         
+    }
+    
+    func checkRecordExists(entity: String,uniqueIdentity: String,idAttributeName:String) -> Bool {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entity)
+        fetchRequest.predicate = NSPredicate(format: "\(idAttributeName) CONTAINS[cd]")
+
+        var results: [Articles] = []
+
+        do {
+            results = try context?.fetch(fetchRequest) as! [Articles]
+        }
+        catch {
+            print("error executing fetch request: \(error)")
+        }
+
+        return results.count > 0
+
     }
     
 }

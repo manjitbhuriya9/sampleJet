@@ -34,30 +34,95 @@ extension ArticleViewModel {
         }
     }
     
-    var comments: Double {
+    var comments: String {
         if let comments = self.article.comments {
-            return comments
+            return comments.roundedWithAbbreviations
         }else{
-            return 0
+            return ""
         }
     }
     
-    var likes: Double {
+    var likes: String {
         if let likes = self.article.likes {
-            return likes
+            return likes.roundedWithAbbreviations
         }else{
-            return 0
+            return ""
         }
     }
     
-    var user: [User]? {
-        if let user = self.article.user {
-            return user
-        }else{
-            return []
+    var title: String {
+        if let title = self.article.media?[0].title {
+            return title
+        }else {
+            return ""
         }
     }
     
+    var url: String {
+        if let url = self.article.media?[0].url {
+            return url
+        }else {
+            return ""
+        }
+    }
+    
+    var image: String {
+        if let image = self.article.media?[0].image {
+            return image
+        }else {
+            return ""
+        }
+    }
+    
+    var name: String {
+        if let name = self.article.user?[0].name {
+            return name + " " + lastname
+        }else {
+            return ""
+        }
+    }
+    
+    var lastname: String {
+        if let lastname = self.article.user?[0].lastname {
+            return lastname
+        }else {
+            return ""
+        }
+    }
+    
+    var designation: String {
+        if let designation = self.article.user?[0].designation {
+            return designation
+        }else {
+            return ""
+        }
+    }
+    
+    var avatar: String {
+        if let avatar = self.article.user?[0].avatar {
+            return avatar
+        }else {
+            return ""
+        }
+    }
+    
+}
+
+extension Double {
+    var roundedWithAbbreviations: String {
+        let number = Double(self)
+        let thousand = number / 1000
+        let million = number / 1000000
+        if million >= 1.0 {
+            return String(format: "%.1fM", (million*10/10))
+        }
+        else if thousand >= 1.0 {
+            return String(format: "%.1fK", (thousand*10/10))
+        }
+        else {
+            return "\(self)"
+        }
+    }
 }
 
 protocol ArticleListViewModelDelegate: NSObject {
@@ -86,7 +151,7 @@ class  ArticleListViewModel {
         WebServices().getArticlesList(url: url) { (articles) in
             if let articles = articles {
                 self.article.append(contentsOf: articles)
-                for (_, article) in articles.enumerated() {
+                /*for (_, article) in articles.enumerated() {
                     var dictArticles = [String:Any]()
                     dictArticles["createdAt"] = article.createdAt
                     dictArticles["content"] = article.content
@@ -102,7 +167,7 @@ class  ArticleListViewModel {
                     DispatchQueue.main.async {
                         DBManager.shardInstance.saveData(object: dictArticles)
                     }
-                }
+                }*/
             }
         }
     }

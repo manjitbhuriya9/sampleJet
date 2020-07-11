@@ -17,16 +17,6 @@ extension Articles {
         return NSFetchRequest<Articles>(entityName: "Articles")
     }
 
-    @NSManaged public var createdAt: String?
-    @NSManaged public var content: String?
-    @NSManaged public var comments: Double
-    @NSManaged public var likes: Double
-    @NSManaged public var name: String?
-    @NSManaged public var lastname: String?
-    @NSManaged public var designation: String?
-    @NSManaged public var avatar: String?
-    @NSManaged public var image: String?
-    @NSManaged public var title: String?
-    @NSManaged public var url: String?
+    @NSManaged public var jsonresponse: Data?
 
 }

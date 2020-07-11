@@ -19,29 +19,16 @@ class WebServices {
                 do {
                     let articles = try JSONDecoder().decode([Article].self, from: data)
                     if articles.count > 0 {
-//                        var dictArticles = [String:Any]()
-//                        for (_, article) in articles.enumerated() {
-//                            dictArticles["createdAt"] = article.createdAt
-//                            dictArticles["content"] = article.content
-//                            dictArticles["comments"] = article.comments
-//                            dictArticles["likes"] = article.likes
-//                            dictArticles["name"] = article.user?[0].name
-//                            dictArticles["lastname"] = article.user?[0].lastname
-//                            dictArticles["designation"] = article.user?[0].designation
-//                            dictArticles["avatar"] = article.user?[0].avatar
-//                            dictArticles["image"] = article.media?[0].image
-//                            dictArticles["title"] = article.media?[0].title
-//                            dictArticles["url"] = article.media?[0].url
-//                        }
-//                        DispatchQueue.main.async {
-//                            DBManager.shardInstance.saveData(object: dictArticles)
-//                        }
+                        DispatchQueue.main.async {
+                            DBManager.shardInstance.saveData(object: data)
+                        }
                         completion(articles)
                     }else{
                         completion([])
                     }
                     
-                }catch {
+                }catch let error {
+                    print("decoding error: \(error)")
                     completion([])
                 }
             }
